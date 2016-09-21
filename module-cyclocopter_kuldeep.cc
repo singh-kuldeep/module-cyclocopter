@@ -1759,20 +1759,9 @@ EmptyCheck(true)
 
 	ppRes = ReadResSets(pDM, HP);
 
-
-	//reading labels from input file ans later use something like push_pack function so that fix number 6 do not come into the picture  
-	// After reading the labels fix the no of blades 
-	// uBlade.resize(6);
-	// NBlades = uBlade.size();
-	// for (int i = 0; i < NBlades; ++i)
-	// {
-	// 	uBlade[i] = HP.GetInt(); 
-	// }
-
 	int BladeLabel = 1 ;
 	while(BladeLabel)
 	{
-		// std::cout << "BladeLabel \t" << uBlade.size() << "\t" << BladeLabel << std::endl;
 		BladeLabel = HP.GetInt();
 		if (BladeLabel != 0)
 		{
@@ -1818,7 +1807,6 @@ CyclocopterDMST::SetValue(DataManager *pDM,
 	dBladeUindPrev.resize(NBlades);
 	dBladeUindMag.resize(NBlades);
 	dIndVelMagAll.resize(floor(2*M_PI/(dOmega*dDeltaT)));
-	// ~ NO_OP;
 }
 
 void
@@ -1986,8 +1974,6 @@ CyclocopterDMST::AssRes(SubVectorHandler& WorkVec,
 	#if 1
 	if(EmptyCheck == true)
 	{
-		// std::cout << "One" << std::endl;
-
 		// Calculating magnitude of Induced velocity of individual blade
 		for (int i = 0; i < NBlades; ++i)
 		{	
@@ -2026,14 +2012,12 @@ CyclocopterDMST::AssRes(SubVectorHandler& WorkVec,
 			dBladeUind[i](1) = (1 - dWeight)*dBladeUind[i](1) + dWeight*dBladeUindPrev[i](1);
 			dBladeUind[i](2) = (1 - dWeight)*dBladeUind[i](2) + dWeight*dBladeUindPrev[i](2);
 			dBladeUind[i](3) = (1 - dWeight)*dBladeUind[i](3) + dWeight*dBladeUindPrev[i](3);
-			// std::cout << dBladeUindMag[i] << std::endl;
 		}
 	}
 	#endif
 
 	if (EmptyCheck == false)
 	{
-		// std::cout << "Both" << std::endl;
 		// Calculating magnitude of Induced velocity of individual blade
 		for (int i = 0; i < NBlades; ++i)
 		{	
@@ -2068,9 +2052,6 @@ CyclocopterDMST::AssRes(SubVectorHandler& WorkVec,
 				dBladeUind[i](1) = (1 - dWeight)*dBladeUind[i](1) + dWeight*dBladeUindPrev[i](1);
 				dBladeUind[i](2) = (1 - dWeight)*dBladeUind[i](2) + dWeight*dBladeUindPrev[i](2);
 				dBladeUind[i](3) = (1 - dWeight)*dBladeUind[i](3) + dWeight*dBladeUindPrev[i](3);
-
-				// std::cout << dBladeUindMag[i] << std::endl;
-
 			}
 			/////////////////////////////////
 			// Lower half
@@ -2300,7 +2281,6 @@ void
 CyclocopterDMST::AddForce(const Elem *pEl, const StructNode *pNode, const Vec3& F, const Vec3& M, const Vec3& X)
 {
 	/* Calculates the azimuth position of the first blade */
-	// if (bFlagIsFirstBlade && bFlagAverage) {
 	if (bFlagIsFirstBlade) 
 	{
 		Vec3 XRel(RRotorTranspose*(X - pRotor->GetXCurr()));
@@ -2327,21 +2307,16 @@ CyclocopterDMST::GetInducedVelocity(Elem::Type type,
 {
 	//printf("%f %f %f\n",dUind(1),dUind(2),dUind(3));
 	Vec3 dUindSet;
+	Vec3 dUindDMSTAvg = ::Zero3;
 	for (int i = 0; i < NBlades; ++i)
 	{
 		if (uLabel == uBlade[i])
 		{
 			dUindSet = dBladeUind[i];
 		}
+		dUindDMSTAvg +=(dBladeUind[i]/NBlades);
 	}
-	if(uLabel == 11000)
-	{
-		std::cout << uLabel << "\t" << "2D" << "\t" << dUind << "\t" << "DMST" << "\t" << (dUindSet) << "\t" << dUindSet.Norm() << std::endl;
-	}
-
-	// return RRotor*(-dUindSet);
-	return RRotor*dUind;
-	// return ::Zero3;
+	return RRotor*(dUind);
 }
 
 /* CyclocopterDMST - end */
