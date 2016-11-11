@@ -1,5 +1,5 @@
---- module-cyclocopter.cc	2016-11-11 11:46:11.167733647 +0530
-+++ module-cyclocopter_kuldeep.cc	2016-11-11 11:48:12.419728241 +0530
+--- module-cyclocopter.cc	2016-11-11 22:38:09.519948259 +0530
++++ module-cyclocopter_kuldeep.cc	2016-11-11 22:34:05.099959156 +0530
 @@ -35,22 +35,27 @@
   * Pierangelo Masarati <pierangelo.masarati@polimi.it>
   */
@@ -723,7 +723,7 @@
  	doublereal dpp = atan2(d2, d1);
  
  	doublereal r = sqrt(d1*d1 + d2*d2)*cos(dpp - dXi);
-@@ -1554,6 +1568,764 @@
+@@ -1554,6 +1568,765 @@
  
  /* CyclocopterPolimi - end */
  
@@ -1476,9 +1476,10 @@
 +		}
 +		dUindDMSTAvg +=(dBladeUind[i]/NBlades);
 +	}
-+	std::cout << uLabel <<"\t" << GlobalCount <<"\t" << "2D" << "\t" << dUind << "\t" <<dUind.Norm() << "\t" << "DMST" << "\t" << dUindSet << "\t" << dUindSet.Norm() << std::endl;
-+	// return RRotor*(dUindSet); // DMST model
-+	return RRotor*(dUind); // 2D model
++	std::cout << "dBlade 1 position " << dBladePos[0] << "  angle   " << atan2(dBladePos[0](2),dBladePos[0](3))*180/M_PI<< std::endl;
++	// std::cout << uLabel <<"\t" << GlobalCount <<"\t" << "2D" << "\t" << dUind << "\t" <<dUind.Norm() << "\t" << "DMST" << "\t" << dUindSet << "\t" << dUindSet.Norm() << std::endl;
++	return RRotor*(dUindSet); // DMST model
++	// return RRotor*(dUind); // 2D model
 +}
 +
 +/* CyclocopterDMST - end */
@@ -1488,7 +1489,7 @@
  #if 0 // KARI NOT IMPLEMENTED YET!
  
  /* CyclocopterKARI - begin */
-@@ -1580,18 +2352,18 @@
+@@ -1580,18 +2353,18 @@
  		DataManager* pDM, MBDynParser& HP);
  	virtual ~CyclocopterKARI(void);
  
@@ -1512,7 +1513,7 @@
  	virtual SubVectorHandler&
  	AssRes(SubVectorHandler& WorkVec,
  		doublereal dCoef,
-@@ -1599,19 +2371,19 @@
+@@ -1599,19 +2372,19 @@
  		const VectorHandler& XPrimeCurr);
  
  #if 0
@@ -1538,7 +1539,7 @@
  	virtual void
  	GetConnectedNodes(std::vector<const Node *>& connectedNodes) const;
  	// ************************************************
-@@ -1738,6 +2510,17 @@
+@@ -1738,6 +2511,17 @@
  			<< std::endl);
  
  		return false;

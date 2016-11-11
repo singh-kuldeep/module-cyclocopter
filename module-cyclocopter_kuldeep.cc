@@ -2317,9 +2317,10 @@ CyclocopterDMST::GetInducedVelocity(Elem::Type type,
 		}
 		dUindDMSTAvg +=(dBladeUind[i]/NBlades);
 	}
-	std::cout << uLabel <<"\t" << GlobalCount <<"\t" << "2D" << "\t" << dUind << "\t" <<dUind.Norm() << "\t" << "DMST" << "\t" << dUindSet << "\t" << dUindSet.Norm() << std::endl;
-	// return RRotor*(dUindSet); // DMST model
-	return RRotor*(dUind); // 2D model
+	std::cout << "dBlade 1 position " << dBladePos[0] << "  angle   " << atan2(dBladePos[0](2),dBladePos[0](3))*180/M_PI<< std::endl;
+	// std::cout << uLabel <<"\t" << GlobalCount <<"\t" << "2D" << "\t" << dUind << "\t" <<dUind.Norm() << "\t" << "DMST" << "\t" << dUindSet << "\t" << dUindSet.Norm() << std::endl;
+	return RRotor*(dUindSet); // DMST model
+	// return RRotor*(dUind); // 2D model
 }
 
 /* CyclocopterDMST - end */
