@@ -2300,12 +2300,13 @@ CyclocopterDMST::AddForce(const Elem *pEl, const StructNode *pNode, const Vec3& 
 		Res.AddForce(F);
 	}
 }
-
+int GlobalCount=0;
 Vec3
 CyclocopterDMST::GetInducedVelocity(Elem::Type type,
 	unsigned uLabel, unsigned uPnt, const Vec3& X) const
 {
 	//printf("%f %f %f\n",dUind(1),dUind(2),dUind(3));
+	GlobalCount = GlobalCount + 1;
 	Vec3 dUindSet;
 	Vec3 dUindDMSTAvg = ::Zero3;
 	for (int i = 0; i < NBlades; ++i)
@@ -2316,7 +2317,9 @@ CyclocopterDMST::GetInducedVelocity(Elem::Type type,
 		}
 		dUindDMSTAvg +=(dBladeUind[i]/NBlades);
 	}
-	return RRotor*(dUind);
+	std::cout << uLabel <<"\t" << GlobalCount <<"\t" << "2D" << "\t" << dUind << "\t" <<dUind.Norm() << "\t" << "DMST" << "\t" << dUindSet << "\t" << dUindSet.Norm() << std::endl;
+	// return RRotor*(dUindSet); // DMST model
+	return RRotor*(dUind); // 2D model
 }
 
 /* CyclocopterDMST - end */
